@@ -58,3 +58,18 @@ index.ts定义了游戏的主要逻辑，包括初始化游戏、处理用户输
 然后，它定义了一个 onWin 函数，用于处理玩家胜利的情况。这个函数将游戏状态设置为 WIN 并更新对话文本。
 接下来，它定义了一个变量 dialogueTimer 和一个函数 updateDialogue。这个函数用于更新对话文本的显示时间。如果对话计时器超过4秒，则从对话文本中删除第一条文本并重置计时器。如果玩家观看了整个对话，则在对话文本中添加一条提示信息。
 最后，它调用 init 函数初始化游戏，并调用 dust().burst(200) 生成一些粒子效果。
+
+
+ritual.ts定义了一些游戏中的仪式，包括 Streak，Bouncing，Doubleshot，Hunter，Weightless，Knockback，Ceiling，Rain, Drunkard, Seer, Tearstone, Impatience, Bleed, Allegiance, Salvage, Studious, Electrodynamics, Chilly, Giants, Avarice, 和 Hardened.
+
+每个仪式都是一个对象，具有一些属性和方法。
+它们的名称和描述属性用于在游戏中显示给玩家。
+它们的标签属性用于表示仪式的类型。
+它们还可以定义一些事件处理方法，用于在游戏中的不同阶段执行特定操作。
+例如：
+
+Streak: 这个仪式在施法时会给法术添加一个 HitStreak 行为。
+Bouncing: 这个仪式在施法时会给法术添加一个弹跳效果。它会设置法术的消失计时器、弹性和弹跳标志。
+Doubleshot: 这个仪式是稀有的，并且与其他分裂仪式互斥。它会将游戏中每回合发射的法术数量设置为2。
+Hunter: 这个仪式是稀有的。它在施法时会给法术添加一个寻找目标的行为。
+Weightless: 这个仪式在施法时会将法术的质量、摩擦系数和弹性设置为0。
