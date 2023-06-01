@@ -1,0 +1,35 @@
+#include "behavior.h"
+
+void Attack::onCollision(GameObject *target)
+{
+    // 处理攻击事件
+    // 计算造成的伤害和承受的伤害
+    // 调用damage函数处理伤害
+}
+
+DespawnTimer::DespawnTimer(GameObject *object, int duration)
+    : Behaviour(object), elapsed(0), duration(duration) {}
+
+void DespawnTimer::onFrame(int dt)
+{
+    // 处理计时器事件
+    // 如果经过的时间超过持续时间，则将游戏对象从游戏中移除
+}
+
+March::March(GameObject *object, int step)
+    : Behaviour(object), step(step) {}
+
+bool March::onUpdate()
+{
+    // 处理行进事件
+    // 更新游戏对象的位置并播放动画效果
+    // 如果游戏对象走出屏幕，则将其从游戏中移除
+}
+
+void Damaging::onCollision(GameObject *target)
+{
+    // 处理造成伤害的事件
+    // 调用damage函数处理伤害
+}
+
+// 其他行为类的实现

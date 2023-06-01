@@ -1,0 +1,46 @@
+#include "game.h"
+
+Game::Game(GameObject *player) : player(player)
+{
+    // 初始化游戏状态、对象和其他变量
+    spawn(player);
+}
+
+void Game::spawn(GameObject *object, double x, double y)
+{
+    // 将游戏对象添加到游戏中
+    // 设置游戏对象的位置
+}
+
+void Game::despawn(GameObject *object)
+{
+    // 将游戏对象从游戏中移除
+}
+
+double Game::getStreakMultiplier()
+{
+    // 计算连击加成
+}
+
+void Game::addSouls(int amount)
+{
+    // 增加灵魂数量
+}
+
+void Game::addRitual(Ritual ritual)
+{
+    // 添加仪式
+}
+
+bool Game::canAddRitual(Ritual ritual)
+{
+    // 检查是否可以添加仪式
+}
+
+void Game::update(int dt)
+{
+    // 更新游戏状态
+    // 更新能力、法术、游戏对象、物理和仪式等
+}
+
+// 其他方法的实现

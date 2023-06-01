@@ -1,0 +1,45 @@
+#ifndef BEHAVIOR_H
+#define BEHAVIOR_H
+
+#include "game.h"
+
+class Attack : public Behaviour
+{
+public:
+    void onCollision(GameObject *target) override;
+};
+
+class DespawnTimer : public Behaviour
+{
+public:
+    DespawnTimer(GameObject *object, int duration);
+
+    void onFrame(int dt) override;
+
+private:
+    int elapsed;
+    int duration;
+};
+
+class March : public Behaviour
+{
+public:
+    March(GameObject *object, int step);
+
+    bool onUpdate() override;
+
+private:
+    int step;
+};
+
+class Damaging : public Behaviour
+{
+public:
+    int amount;
+
+    void onCollision(GameObject *target) override;
+};
+
+// 其他行为类的定义
+
+#endif // BEHAVIOR_H

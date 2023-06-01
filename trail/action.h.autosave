@@ -1,0 +1,11 @@
+#ifndef ACTION_H
+#define ACTION_H
+
+#include "game.h"
+
+void damage(Game *game, GameObject *object, int amount, GameObject *dealer = nullptr);
+void die(Game *game, GameObject *object, GameObject *killer = nullptr);
+void cast(Game *game);
+void resurrect(Game *game);
+
+#endif // ACTION_H
