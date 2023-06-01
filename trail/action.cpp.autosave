@@ -1,0 +1,35 @@
+#include "action.h"
+
+void damage(Game *game, GameObject *object, int amount, GameObject *dealer)
+{
+    // 处理游戏对象受到伤害的事件
+    // 调用游戏对象的onDamage方法
+    // 根据伤害量更新游戏对象的生命值
+    // 如果游戏对象的生命值降为0，则调用die函数
+}
+
+void die(Game *game, GameObject *object, GameObject *killer)
+{
+    // 处理游戏对象死亡的事件
+    // 创建一个Death对象
+    // 调用游戏中所有仪式的onDeath方法
+    // 如果游戏对象具有移动能力，则在其位置生成一些骨头粒子效果
+    // 如果随机数小于等于游戏对象的尸体几率，则在其位置生成一个尸体
+    // 调用游戏对象的onDeath方法，并将其从游戏中移除
+}
+
+void cast(Game *game)
+{
+    // 处理玩家施法的事件
+    // 检查玩家当前的法术剩余次数，如果不为0，则减少一次并更新玩家的精灵图像
+    // 根据法术的基础威力、目标角度和每轮发射数量，创建一些法术弹幕并将它们添加到游戏中
+    // 调用游戏的onCast方法
+}
+
+void resurrect(Game *game)
+{
+    // 处理玩家复活尸体的事件
+    // 检查玩家当前的能力计时器是否小于冷却时间，如果是，则重置计时器并调用游戏中所有仪式的onResurrect方法
+    // 遍历游戏中所有尸体对象，将它们从游戏中移除并在其位置生成一个骷髅单位
+    // 调用所有仪式的onResurrection方法
+}
