@@ -20,6 +20,7 @@ SOURCES += \
     behavior.cpp \
     engine.cpp \
     game.cpp \
+    helpers.cpp \
     index.cpp \
     main.cpp \
     mainwindow.cpp
@@ -29,6 +30,7 @@ HEADERS += \
     behavior.h \
     engine.h \
     game.h \
+    helpers.h \
     index.h \
     mainwindow.h
 
