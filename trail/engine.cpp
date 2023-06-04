@@ -29,8 +29,11 @@
 
 
 // Global variables
-QPixmap spriteSrc("./sprites.png");
-QImage spritesImage = spriteSrc.toImage();
+QImage canvas;
+//QPixmap spriteSrc("./sprites.png");
+//QImage spritesImage = spriteSrc.toImage();
+QPixmap *spriteSrc = nullptr;
+QImage spritesImage;
 int glyphWidth;
 int glyphHeight;
 int lineHeight;
@@ -78,7 +81,6 @@ void import_font(){
 }
 
 // Canvas methods
-
 
 void clear() {
     // 清空画布
