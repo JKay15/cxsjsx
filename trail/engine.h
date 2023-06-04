@@ -16,8 +16,7 @@
 
 // Alias for Sprite
 using Sprite = std::vector<int>;
-
-extern QPixmap spriteSrc;
+extern QPixmap* spriteSrc;
 extern QImage spritesImage;
 extern int glyphWidth;
 extern int glyphHeight;
@@ -100,6 +99,9 @@ struct Particle {
   int variant;
   double mass;
   double friction;
+  bool operator<(const Particle& other) const {
+      return this < &other;  // 使用对象的地址比较
+  }
 };
 
 class ParticleEmitter {
