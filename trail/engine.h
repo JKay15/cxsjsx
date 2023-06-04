@@ -41,6 +41,7 @@ public:
 };
 
 //canvas methods
+extern QImage canvas;
 void clear();
 void drawSprite(const Sprite& sprite, int x, int y);
 void drawSceneSprite(const Sprite& sprite, int x, int y);
