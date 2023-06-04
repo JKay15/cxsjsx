@@ -79,7 +79,6 @@ void import_font(){
 
 // Canvas methods
 
-extern QImage canvas;
 
 void clear() {
     // 清空画布
