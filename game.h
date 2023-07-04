@@ -2,8 +2,11 @@
 #define GAME_H
 #include "helpers.h"
 #include "engine.h"
+#include "tags.h"
+#include "actions.h"
 #include <cmath>
-
+#include<optional>
+#include <functional>
 
 const int MAX_STREAK=10;
 class Game;
@@ -105,19 +108,15 @@ class Behaviour{
     int timer = 0;
     Sprite sprite;
 
-    void onAdded();
-    void onRemoved();
-    bool onUpdate();
-    void onBounce();
-    void onDamage(Damage damage);
-    void onDeath(Death death);
-    void onFrame(double dt);
-    void onCollision(GameObject* target);
-
-  private:
+    std::function<void()> onAdded;
+    std::function<void()> onRemoved;
+    std::function<std::optional<bool>()> onUpdate;
+    std::function<void()> onBounce;
+    std::function<void(struct Damage*)> onDamage;
+    std::function<void(Death)> onDeath;
+    std::function<void(double)> onFrame;
+    std::function<void(GameObject*)> onCollision;
     GameObject* object;
-
-
 };
 
 //游戏物体的类
@@ -141,7 +140,7 @@ public:
     double hp=0;
     double maxHp=0;
     int souls=0;
-    int corpseChance=0;
+    double corpseChance=0;
     bool despawnOnCollision=0;
     bool despawnOnBounce = 0;
     int groupId=0;
@@ -151,21 +150,21 @@ public:
     double updateSpeed=0;
     double updateClock = 0;
 
-    bool is(int mask){
+    virtual bool is(int mask)const{
         return (tags & mask) > 0;
     }
-    Rectangle bounds(){
+    virtual Rectangle bounds(){
         return Rectangle(x, y, sprite[2], sprite[3]);
     }
-    Point center(){
+    virtual Point center(){
         return  Point(x + sprite[2] / 2, y + sprite[3] / 2);
     }
-    void onFrame(int dt){
+    virtual void onFrame(int dt){
         for(auto behaviour:behaviours){
              behaviour->onFrame(dt);
         }
     }
-    void onUpdate(){
+    virtual void onUpdate(){
         for(auto behaviour:behaviours){
              if(++behaviour->timer>=behaviour->turns){
                  behaviour->timer=0;
@@ -173,17 +172,17 @@ public:
              }
         }
     }
-    void onDamage(Damage& damage){
+    virtual void onDamage(Damage& damage){
         for(auto behaviour:behaviours){
-             behaviour->onDamage(damage);
+             behaviour->onDamage(&damage);
         }
     }
-    void onDeath(Death& death){
+    virtual void onDeath(Death& death){
         for(auto behaviour:behaviours){
              behaviour->onDeath(death);
         }
     }
-    void onBounce(){
+    virtual void onBounce(){
         for(auto behaviour:behaviours){
              behaviour->onBounce();
         }
@@ -191,15 +190,15 @@ public:
 
         }
     }
-    void onCollision(GameObject* target);
-    void removeBehaviour(Behaviour* behaviour){
+    virtual void onCollision(GameObject* target);
+    virtual void removeBehaviour(Behaviour* behaviour){
         auto it=std::find(behaviours.begin(),behaviours.end(),behaviour);
         if(it!=behaviours.end()){
             behaviours.erase(it);
             (*it)->onRemoved();
         }
     }
-    void update(int dt){
+    virtual void update(int dt){
         onFrame(dt);
         updateClock-=dt;
         if(updateClock<=0){
@@ -209,26 +208,26 @@ public:
         emitter.x=x;
         emitter.y=y;
     }
-    Behaviour* addBehaviour(Behaviour* behaviour = nullptr,int index=-1) {
+    virtual Behaviour* addBehaviour(Behaviour* behaviour = nullptr,int index=-1) {
       if(index==-1)
-        index = this->behaviours.size();
+        index = behaviours.size();
       if (behaviour == nullptr) {
         behaviour = new Behaviour(this);
       }
 
-      for (Behaviour* existingBehaviour : this->behaviours) {
+      for (Behaviour* existingBehaviour : behaviours) {
         if (typeid(*existingBehaviour) == typeid(*behaviour)) {
           return behaviour;
         }
       }
 
-      this->behaviours.insert(this->behaviours.begin() + index, behaviour);
+      behaviours.insert(behaviours.begin() + index, behaviour);
       behaviour->onAdded();
       return behaviour;
     }
     template<typename T>
-    T* getBehaviour() {
-      for (Behaviour* behaviour : this->behaviours) {
+    std::optional<T*> getBehaviour() {
+      for (Behaviour* behaviour : behaviours) {
         if (dynamic_cast<T*>(behaviour)) {
           return dynamic_cast<T*>(behaviour);
         }
@@ -249,12 +248,12 @@ public:
     std::vector<std::string> dialogue;
     Spell spell={0,15,180,1,0.1,3,3,1000,0};
     Ability ability={10000,10000};
-    void spawn(GameObject* object1,int x=0,int y=0) {
-        if(x!=object1->x||y!=object1->y){
-            object1->x = x;
-            object1->y = y;
+    void spawn(GameObject object1,int x=0,int y=0) {
+        if(x!=object1.x||y!=object1.y){
+            object1.x = x;
+            object1.y = y;
         }
-        objects.push_back(object1);
+        objects.push_back(&object1);
     }
     void despawn(GameObject* object) {
       object?object->emitter.remove():void();
@@ -266,14 +265,14 @@ public:
 
     Game(GameObject player1){
         player=&player1;
-        spawn(player);
+        spawn(*player);
         window.game=this;
     }
     double getStreakMultiplier() {
         return streak/MAX_STREAK;
     }
 
-    void addSoul(int amount){
+    void addSouls(int amount){
         souls+=amount+amount*getStreakMultiplier();
     }
 
@@ -401,11 +400,17 @@ private:
 
 };
 void GameObject::onCollision(GameObject *target){
-    for(auto behaviour:behaviours){
-        behaviour->onCollision(target);
-    }
-    if(despawnOnCollision){
-        game.despawn(this);
+    if((tags&PLAYER)==0){
+        for(auto behaviour:behaviours){
+            behaviour->onCollision(target);
+        }
+        if(despawnOnCollision){
+            game.despawn(this);
+        }
+    }else{
+        actions::Damage(this,target->hp);
+        actions::Die(target);
     }
 }
+
 #endif // GAME_H
