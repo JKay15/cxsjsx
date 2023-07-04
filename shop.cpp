@@ -43,10 +43,10 @@ void exitShop() {
 void restockShop() {
     int exp = pow(game.level + 1, 2);
     std::vector<ShopItem> items = {
-        {10 * game.level, "Heal", `Heal 1*`, [](){ Damage(game.player, -1); }},
-        {10 * exp, "Renew", `+1* max hp`, [](){
-            game.player.maxHp++;
-            game.player.hp++;
+        {10 * game.level, "Heal", "Heal 1*", [](){ actions::Damage(game.player, -1); }},
+        {10 * exp, "Renew", "+1* max hp", [](){
+            game.player->maxHp++;
+            game.player->hp++;
         }},
         {10 * exp, "Recharge", "+1\x7F max casts", [](){ game.spell.maxCasts++; }},
         createRitualItems(),
@@ -61,9 +61,9 @@ std::vector<ShopItem> createRitualItems() {
     std::vector<Ritual> commons = rituals.filter(r => r.rarity != RARE);
     std::vector<Ritual> rares = rituals.filter(r => r.rarity == RARE);
     std::vector<Ritual> pool = rares.slice(0, 1).concat(commons.slice(0, 2));
-    
+
     std::vector<ShopItem> result;
-    
+
     for (Ritual ritual : pool) {
         result.push_back({
             ritual.rarity == RARE ? 200 + randomInt(100) : 75 + randomInt(100),
@@ -75,6 +75,6 @@ std::vector<ShopItem> createRitualItems() {
             }
         });
     }
-    
+
     return result;
 }
