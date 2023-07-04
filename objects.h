@@ -1,12 +1,13 @@
-// objects.h
 #ifndef OBJECTS_H
 #define OBJECTS_H
-
 #include "game.h"
 #include "tags.h"
 #include "helpers.h"
 #include "behaviours.h"
 #include "actions.h"
+#include "sprites.h"
+#include "fx.h"
+#include "sounds.h"
 
 GameObject Corpse();
 GameObject Player();
@@ -29,5 +30,4 @@ GameObject RoyalGuard();
 GameObject RoyalGuardOrb();
 GameObject Wizard();
 GameObject Portal();
-
-#endif
+#endif // OBJECTS_H
