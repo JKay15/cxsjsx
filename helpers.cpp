@@ -1,21 +1,9 @@
-#include <iostream>
-#include <cmath>
-#include <vector>
+#include "helpers.h"
+#include <algorithm>
+#include <chrono>
+#include <thread>
 
-using namespace std;
-
-const double DEG_180 = M_PI;
-const double DEG_90 = DEG_180 / 2;
-const double DEG_270 = DEG_180 + DEG_90;
-const double DEG_360 = DEG_180 * 2;
-
-struct Point {
-    double x;
-    double y;
-};
-
-typedef vector<double> Vector;
-
+// 创建一个点
 Point createPoint(double x, double y) {
     Point p;
     p.x = x;
@@ -23,13 +11,7 @@ Point createPoint(double x, double y) {
     return p;
 }
 
-struct Rectangle {
-    double x;
-    double y;
-    double w;
-    double h;
-};
-
+// 创建一个矩形
 Rectangle createRectangle(double x, double y, double w, double h) {
     Rectangle r;
     r.x = x;
@@ -39,15 +21,18 @@ Rectangle createRectangle(double x, double y, double w, double h) {
     return r;
 }
 
+// 判断两个矩形是否重叠
 bool overlaps(Rectangle a, Rectangle b) {
     return (a.x < b.x + b.w && a.y < b.y + b.h &&
             a.x + a.w > b.x && a.y + a.h > b.y);
 }
 
+// 将值限制在给定的范围内
 double clamp(double val, double min, double max) {
     return val < min ? min : val > max ? max : val;
 }
 
+// 根据给定的角度，创建一个向量
 Vector vectorFromAngle(double radians) {
     Vector v;
     v.push_back(cos(radians));
@@ -55,70 +40,61 @@ Vector vectorFromAngle(double radians) {
     return v;
 }
 
+// 计算两个点之间的夹角
 double angleBetweenPoints(Point p1, Point p2) {
     return atan2(p2.y - p1.y, p2.x - p1.x);
 }
 
+// 从数组中删除指定的元素
 template<typename T>
-void removeFromArray(vector<T>& array, T element) {
-    typename vector<T>::iterator it = find(array.begin(), array.end(), element);
+void removeFromArray(std::vector<T>& array, T element) {
+    typename std::vector<T>::iterator it = find(array.begin(), array.end(), element);
     if (it != array.end()) {
         array.erase(it);
     }
 }
 
+// 从数组中随机选择一个元素
 template<typename T>
-T randomElement(vector<T>& items) {
+T randomElement(std::vector<T>& items) {
     int index = rand() % items.size();
     return items[index];
 }
 
+// 计算两个点之间的距离
 double distance(Point p1, Point p2) {
     return hypot(p2.x - p1.x, p2.y - p1.y);
 }
 
+// 根据给定的 X 和 Y 值，计算向量的角度
 double vectorToAngle(double x, double y) {
     return atan2(y, x);
 }
 
+// 生成一个指定范围内的随机整数
 int randomInt(int max) {
     return rand() % max;
 }
 
-double randomFloat(double max = 1) {
+// 生成一个指定范围内的随机浮点数
+double randomFloat(double max) {
     return static_cast<double>(rand()) / RAND_MAX * max;
 }
 
+// 线程休眠指定时间
 void sleep(int ms) {
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
+// 将数组中的元素随机排序
 template<typename T>
-vector<T> shuffled(vector<T> array) {
+std::vector<T> shuffled(std::vector<T> array) {
     int m = array.size();
 
     while (m) {
         int i = randomInt(m--);
-        swap(array[m], array[i]);
+        std::swap(array[m], array[i]);
     }
 
     return array;
-}
-
-int main() {
-    srand(time(NULL)); // 初始化随机数生成器
-
-    // 调用函数示例
-    Point p = createPoint(10, 20);
-    Rectangle r = createRectangle(0, 0, 100, 50);
-    bool isOverlap = overlaps(p, r);
-    Vector v = vectorFromAngle(DEG_90);
-    double angle = angleBetweenPoints(p, createPoint(30, 40));
-    vector<int> arr = {1, 2, 3, 4, 5};
-    removeFromArray(arr, 3);
-    int randomNum = randomInt(10);
-    double randomFloatNum = randomFloat();
-    sleep(1000);
-
-    return 0;
 }
