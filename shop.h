@@ -1,4 +1,3 @@
-// shop.h
 #ifndef SHOP_H
 #define SHOP_H
 
@@ -10,13 +9,7 @@
 #include "levels.h"
 #include "sounds.h"
 
-// 商店物品结构体
-struct ShopItem {
-    int cost; // 花费
-    std::string name; // 名称
-    std::string description; // 描述
-    void (*purchase)(); // 购买函数
-};
+
 
 // 商店结构体
 struct Shop {
@@ -33,5 +26,4 @@ void enterShop(); // 进入商店函数
 void exitShop(); // 退出商店函数
 void restockShop(); // 重新进货函数
 std::vector<ShopItem> createRitualItems(); // 创建仪式物品列表函数
-
-#endif
+#endif // SHOP_H
