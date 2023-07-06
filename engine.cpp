@@ -259,6 +259,28 @@ ParticleEmitter& ParticleEmitter::extend(Rectangle rec) {
 ParticleEmitter& ParticleEmitter::extend(std::vector<std::vector<Sprite>> Variant) {
     variants=Variant;
 }
+ParticleEmitter& ParticleEmitter::extend(std::vector<std::vector<Sprite>> Variant,double Frequency,Range Angle,Range Mass) {
+    // Implementation for extending the current ParticleEmitter with properties from another ParticleEmitter
+    // 将 other 的属性扩展到当前 ParticleEmitter 对象
+    frequency=Frequency;
+    if(Variant.size()!=0){
+        variants=Variant;
+    }
+    if(Mass!=defaultRange){
+        mass=Mass;
+    }
+    if(Angle!=defaultRange){
+        angle=Angle;
+    }
+}
+ParticleEmitter& ParticleEmitter::extend(double X,double Y,std::vector<std::vector<Sprite>> Variant,Range Duration){
+    x=X;
+    y=Y;
+    if(Variant.size()!=0){
+        variants=Variant;
+    }
+    duration=Duration;
+}
 void ParticleEmitter::remove() {
     // Implementation for removing the ParticleEmitter
     done = true;
