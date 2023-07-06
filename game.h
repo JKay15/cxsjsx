@@ -420,16 +420,11 @@ private:
 
 };
 void GameObject::onCollision(GameObject *target){
-    if((tags&PLAYER)==0){
-        for(auto behaviour:behaviours){
-            behaviour->onCollision(target);
-        }
-        if(despawnOnCollision){
-            game.despawn(this);
-        }
-    }else{
-        actions::Damage(this,target->hp);
-        actions::Die(target);
+    for(auto behaviour:behaviours){
+        behaviour->onCollision(target);
+    }
+    if(despawnOnCollision){
+        game.despawn(this);
     }
 }
 
