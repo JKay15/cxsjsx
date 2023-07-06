@@ -65,14 +65,37 @@ struct Ritual {
   bool recursive;
   Rarity rarity;
   void (*onFrame)(float dt);
-  void (*onActive)();
-  void (*onCast)(GameObject* spell);
-  void (*onResurrect)();
-  void (*onResurrection)(GameObject* object);
+  std::function<void()> onActive;
+  std::function<void(GameObject*)> onCast;
+  std::function<void()> onResurrect;
+  std::function<void(GameObject*)> onResurrection;
   void (*onDeath)(Death death);
-  void (*onLevelEnd)();
+  std::function<void()> onLevelEnd;
   void (*onLevelStart)();
-  void (*onShopEnter)();
+  std::function<void()> onShopEnter;
+  Ritual(int Tags,std::string Name,std::string Description,std::function<void(GameObject*)> tmp):name(Name),description(Description),tags(Tags){
+      if(Name=="Giants"||Name=="Hardened"){
+          onResurrection=tmp;
+      }else{
+          onCast=tmp;
+      }
+  };
+  Ritual(int Tags,int ExclusiveTags,Rarity Rarity,std::string Name,std::string Description,std::function<void()> OnActive):name(Name),description(Description),tags(Tags),exclusiveTags(ExclusiveTags),rarity(Rarity),onActive(OnActive){};
+  Ritual(int Tags,Rarity Rarity,std::string Name,std::string Description,std::function<void(GameObject*)> OnCast):name(Name),description(Description),tags(Tags),rarity(Rarity),onCast(OnCast){};
+  Ritual(int Tags,int RequiredTags,std::string Name,std::string Description,std::function<void()> OnActive):name(Name),description(Description),tags(Tags),requiredTags(RequiredTags),onActive(OnActive){};
+  Ritual(int Tags,int ExclusiveTags,Rarity Rarity,std::string Name,std::string Description,bool Recursive,std::function<void(GameObject*)> OnCast):name(Name),description(Description),tags(Tags),exclusiveTags(ExclusiveTags),recursive(Recursive),rarity(Rarity),onCast(OnCast){};
+  Ritual(int Tags,std::string Name,std::string Description,std::function<void()> tmp):name(Name),description(Description),tags(Tags){
+      if(Name=="Impatience"){
+          onActive=tmp;
+      }else if(Name=="Allegiance"){
+          onResurrect=tmp;
+      }else if(Name=="Salvage"){
+          onLevelEnd=tmp;
+      }else if(Name=="Studious"){
+          onShopEnter=tmp;
+      }
+  };
+
 };
 //一些常量
 const int INTRO = 0;
@@ -320,7 +343,6 @@ public:
             }
             ritual?ritual->onCast(spell):void();
         }
-
     }
     Point getCastingPoint(){
         double targetX=player->center().x+cos(spell.targetAngle)*spell.targetRadius;
@@ -352,7 +374,6 @@ private:
         for(auto ritual:rituals){
             ritual?ritual->onFrame(dt):void();
         }
-
     }
     void updateObjects(int dt){
         for(auto object:objects){
@@ -395,7 +416,6 @@ private:
                 }
             }
         }
-
     }
 
 };
