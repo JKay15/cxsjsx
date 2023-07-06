@@ -40,7 +40,7 @@ void Die(GameObject* object, GameObject* killer) {
 
         // 如果随机数小于等于对象的尸体概率，则生成尸体
         if (randomFloat() <= object->corpseChance) {
-            game.spawn(Corpse(), center.x, center.y);
+            game.spawn( objects::Corpse(), center.x, center.y);
         }
 
         // 增加游戏灵魂值
@@ -78,7 +78,7 @@ void Cast() {
 
     // 遍历每一发子弹
     for (int j = 0; j < spell.shotsPerRound; j++) {
-        auto projectile = Spell();
+        auto projectile =  objects::Spell();
         float angle = targetAngle + j * spell.shotOffsetAngle;
         auto res = vectorFromAngle(angle);
         double vx = res[0];
@@ -120,7 +120,7 @@ void Resurrect() {
         game.despawn(&corpse);
 
         // 创建骷髅单位并将其加入游戏
-        auto unit = Skeleton();
+        auto unit =  objects::Skeleton();
         game.spawn(unit, corpse.x, 0);
         fx::resurrect(unit).burst(10).remove();
 
