@@ -7,17 +7,17 @@ const QString ICON_SOULS = "$"; // 定义一个常量字符串 ICON_SOULS，其�
 int screenShakeTimer = 0; // 定义一个整型变量 screenShakeTimer，其初始值为 0
 Point sceneOrigin(0, 150); // 定义一个 Point 类型变量 sceneOrigin，其初始值为 (0, 150)
 
-void Renderer::screenshake(QPainter &painter, double time) { // 定义 Renderer 类的 screenshake 方法，该方法接受一个 QPainter 对象和一个 double 类型变量作为参数
+void screenshake(QPainter &painter, double time) { // 定义 Renderer 类的 screenshake 方法，该方法接受一个 QPainter 对象和一个 double 类型变量作为参数
     screenShakeTimer = time; // 将 screenShakeTimer 的值设为 time
 }
 
-Point Renderer::screenToSceneCoords(QPainter &painter, double x, double y) { // 定义 Renderer 类的 screenToSceneCoords 方法，该方法接受一个 QPainter 对象和两个 double 类型变量作为参数
+Point screenToSceneCoords(QPainter &painter, double x, double y) { // 定义 Renderer 类的 screenToSceneCoords 方法，该方法接受一个 QPainter 对象和两个 double 类型变量作为参数
     int sx = static_cast<int>(x * canvas.width()); // 计算场景坐标系中的 x 坐标
     int sy = static_cast<int>(y * canvas.height()); // 计算场景坐标系中的 y 坐标
     return { double(sx), sceneOrigin.y - sy }; // 返回计算得到的场景坐标
 }
 
-void Renderer::render(QPainter &painter, double dt) { // 定义 Renderer 类的 render 方法，该方法接受一个 QPainter 对象和一个 double 类型变量作为参数
+void render(QPainter &painter, double dt) { // 定义 Renderer 类的 render 方法，该方法接受一个 QPainter 对象和一个 double 类型变量作为参数
     clear(); // 调用 clear 方法清空画布
     painter.save(); // 保存 painter 的状态
 
@@ -40,7 +40,7 @@ void Renderer::render(QPainter &painter, double dt) { // 定义 Renderer 类的 
     }
 }
 
-void Renderer::drawShop(QPainter &painter) { // 定义 Renderer 类的 drawShop 方法，该方法接受一个 QPainter 对象作为参数
+void drawShop(QPainter &painter) { // 定义 Renderer 类的 drawShop 方法，该方法接受一个 QPainter 对象作为参数
     painter.drawText(160, 20, "Rituals\n\n"); // 在指定位置绘制文本 "Rituals\n\n"
     auto selected = shop.items[shop.selectedIndex]; // 获取当前选中的商店物品
     int y = 40; // 设置初始 y 坐标
@@ -49,10 +49,10 @@ void Renderer::drawShop(QPainter &painter) { // 定义 Renderer 类的 drawShop 
         y += 20; // 更新 y 坐标以便在下一行绘制文本
     }
     painter.drawText(160, y + 20, QString::fromStdString("\n" + selected.description + "\n")); // 在指定位置绘制当前选中物品的描述
-    
+
 }
 
-void Renderer::drawHud(QPainter &painter) {
+void drawHud(QPainter &painter) {
     if (!game.dialogue.empty()) { // 如果对话不为空
         painter.drawText(75, 50, QString::fromStdString(game.dialogue[0])); // 绘制对话文本
     }
@@ -93,14 +93,14 @@ void Renderer::drawHud(QPainter &painter) {
     }
 }
 
-void Renderer::drawOrbs(double x, double y, double value, double maxValue, const Sprite &sprite, const Sprite &emptySprite) { // 定义 Renderer 类的 drawOrbs 方法，该方法接受一个 QPainter 对象、四个 double 类型变量和两个 QPixmap 对象作为参数
+void drawOrbs(double x, double y, double value, double maxValue, const Sprite &sprite, const Sprite &emptySprite) { // 定义 Renderer 类的 drawOrbs 方法，该方法接受一个 QPainter 对象、四个 double 类型变量和两个 QPixmap 对象作为参数
     int x0 = x - (maxValue * 4) / 2; // 计算第一个精灵图像的 x 坐标
     for (int i = 0; i < maxValue; i++) { // 遍历所有精灵图像
         drawSceneSprite(i < value ? sprite : emptySprite, x0 + i * 4, y);// 在指定位置绘制精灵图像，如果当前索引小于 value，则绘制 sprite，否则绘制 emptySprite
     }
 }
 
-void Renderer::drawObjects(QPainter &painter) {
+void drawObjects(QPainter &painter) {
     for (auto &object : game.objects) {
         drawSceneSprite(object->sprite, object->x, object->y + object->hop); // 使用 drawSceneSprite 函数绘制精灵
 
@@ -129,7 +129,7 @@ void Renderer::drawObjects(QPainter &painter) {
 }
 
 
-void Renderer::drawBackground() {
+void drawBackground() {
     for (int i = 0; i < game.stage.width / 16; i++) { // 遍历游戏舞台宽度
         auto sprite = i % 5 ? sprites::wall : sprites::door; // 根据位置选择墙壁或门的精灵
         drawSceneSprite(sprite, i * 16, 0);
@@ -138,13 +138,13 @@ void Renderer::drawBackground() {
     }
 }
 
-void Renderer::drawReticle() {
+void drawReticle() {
     auto [x, y] = game.getCastingPoint(); // 获取准星位置
     auto sprite = sprites::reticle; // 获取准星精灵
      drawSceneSprite(sprite, x - sprite[2] / 2, y - sprite[3] / 2); // 在准星位置绘制准星精灵
 }
 
-void Renderer::drawParticles() {
+void drawParticles() {
     for (auto &emitter : particleEmitters) { // 遍历所有粒子发射器
         for (auto &particle : emitter->particles) { // 遍历每个粒子发射器中的所有粒子
             auto variant = emitter->variants[particle.variant]; // 获取粒子变体
