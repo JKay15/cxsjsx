@@ -44,15 +44,15 @@ public:
 class March : public Behaviour {
 public:
     int step; // 步长
-
+    std::function<std::optional<bool>(QPainter& painter)> onUpdate;
     March(GameObject& object, int step):Behaviour(&object),step(step){
-        onUpdate = [&]() {
+        onUpdate = [&](QPainter& painter) {
             if (this->object->y > 0) return std::optional<bool>();
 
             tween(this->object->x, this->object->x + step, 200, [&](double x, double t) {
                 this->object->x = x;
                 this->object->hop = std::sin(t * M_PI) * 2;
-                if (t == 1 && this->object->mass >= 100) screenshake(50);
+                if (t == 1 && this->object->mass >= 100) screenshake(painter,50);
             });
 
             if ((step < 0 && this->object->x < 0) || (step > 0 && this->object->x > game.stage.width)) {
