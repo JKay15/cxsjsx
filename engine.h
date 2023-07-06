@@ -174,6 +174,8 @@ public:
   ParticleEmitter& extend(double X,double Y);
   ParticleEmitter& extend(Rectangle rec);
   ParticleEmitter& extend(std::vector<std::vector<Sprite>> Variant);
+  ParticleEmitter& extend(std::vector<std::vector<Sprite>> Variant,double Frequency,Range Angle,Range Mass);
+  ParticleEmitter& extend(double X,double Y,std::vector<std::vector<Sprite>> Variant,Range Duration);
   void remove();
 
   void update(double dt);
