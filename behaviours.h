@@ -204,11 +204,11 @@ public:
         this->hit=true;
     };
     HitStreak(GameObject* ob):Behaviour(ob){
-        onAdded=[&](){
+        onAdded=[=](){
             counter = HitStreak::counters[object->groupId];
             counter.total++;
         };
-        onRemoved=[&](){
+        onRemoved=[=](){
             if (hit) counter.hits++;
             if (--counter.total) return;
             if (counter.hits) {
@@ -220,6 +220,8 @@ public:
     }
 
 };
+std::map<int, SpellCounter> HitStreak::counters;
+
 // 无敌行为类
 class Invulnerable : public Behaviour {
 public:
@@ -254,7 +256,7 @@ public:
         onCollision=[&](GameObject* target){
             int bolts=3;
             for(int i=0;i<bolts;i++){
-                auto bolt=LightningSpell();
+                auto bolt= objects::LightningSpell();
                 bolt.vy = -200;
                  bolt.vx = randomInt(20) - 10;
                  bolt.y = clamp(50 + randomInt(100), 0, game.stage.ceiling - 10);
