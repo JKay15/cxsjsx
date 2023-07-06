@@ -8,7 +8,7 @@
 #include "sprites.h"
 #include "fx.h"
 #include "sounds.h"
-
+namespace objects {
 GameObject Corpse();
 GameObject Player();
 GameObject Spell();
@@ -30,4 +30,7 @@ GameObject RoyalGuard();
 GameObject RoyalGuardOrb();
 GameObject Wizard();
 GameObject Portal();
+
+}
+
 #endif // OBJECTS_H
