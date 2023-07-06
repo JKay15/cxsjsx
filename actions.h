@@ -19,4 +19,3 @@ void Resurrect(); // 复活函数
 }
 
 #endif // ACTIONS_H
-
