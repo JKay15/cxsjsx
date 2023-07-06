@@ -7,8 +7,7 @@
 #include <shop.h>
 #include <behaviours.h>
 
-class Renderer {
-public:
+
     void screenshake(QPainter &painter, double time);
     Point screenToSceneCoords(QPainter &painter, double x, double y);
     void render(QPainter &painter, double dt);
@@ -19,4 +18,4 @@ public:
     void drawBackground();
     void drawReticle();
     void drawParticles();
-};
+
