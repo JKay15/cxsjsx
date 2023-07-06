@@ -52,7 +52,7 @@ public:
             tween(this->object->x, this->object->x + step, 200, [&](double x, double t) {
                 this->object->x = x;
                 this->object->hop = std::sin(t * M_PI) * 2;
-                if (t == 1 && this->object->mass >= 100) screenshake(50);
+                if (t == 1 && this->object->mass >= 100) Renderer::screenshake(50);
             });
 
             if ((step < 0 && this->object->x < 0) || (step > 0 && this->object->x > game.stage.width)) {
