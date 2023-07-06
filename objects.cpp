@@ -125,7 +125,7 @@ GameObject TheKing() {
     int phase = 1; // 初始化阶段为 1
 
     March* marching = new March(unit, -32); // 创建行军行为对象（移动速度为 -32）
-    Summon* summons = new Summon(unit, RoyalGuard, 2000); // 创建召唤行为对象（每 2 秒召唤一个王室卫士）
+    Summon* summons = new Summon(unit,  objects::RoyalGuard, 2000); // 创建召唤行为对象（每 2 秒召唤一个王室卫士）
     Enraged* enraged = new Enraged(unit, SPELL); // 创建愤怒行为对象（对法术免疫）
     Invulnerable* invulnerable = new Invulnerable(&unit); // 创建无敌行为对象
     Behaviour* boss = new Behaviour(&unit); // 创建自定义行为对象
@@ -258,7 +258,7 @@ GameObject Piper() {
     unit.sprite = sprites::piper; // 设置精灵图像
     unit.updateSpeed = 500; // 设置更新速度
     unit.hp = unit.maxHp = 15; // 设置生命值和最大生命值
-    unit.addBehaviour(new Summon(unit, Rat, 2000)); // 添加召唤行为（召唤老鼠）
+    unit.addBehaviour(new Summon(unit,  objects::Rat, 2000)); // 添加召唤行为（召唤老鼠）
     unit.souls = 100; // 设置灵魂数量
     return unit; // 返回游戏对象
 }
@@ -343,7 +343,7 @@ GameObject RoyalGuard() {
         if (dmg->dealer->vx > 0) { // 如果伤害来源的水平速度大于 0，则反弹法术并生成王室卫士宝珠对象
             dmg->amount = 0; // 设置伤害量为 0
 
-            GameObject orb = RoyalGuardOrb(); // 创建王室卫士宝珠对象
+            GameObject orb = objects::RoyalGuardOrb(); // 创建王室卫士宝珠对象
             orb.vx = dmg->dealer->vx *= -1; // 设置水平速度
             orb.vy = dmg->dealer->vy *= -0.25; // 设置垂直速度
             orb.mass = dmg->dealer->mass; // 设置质量
@@ -385,7 +385,7 @@ GameObject Wizard() {
     unit.hp = unit.maxHp = 15; // 设置生命值和最大生命值
     unit.souls = 10; // 设置灵魂数量
 
-    Summon* summonBehaviour = new Summon(unit, Portal, 3000);
+    Summon* summonBehaviour = new Summon(unit,  objects::Portal, 3000);
     unit.addBehaviour(summonBehaviour); // 添加召唤行为对象（每 3 秒召唤一个传送门）
 
     return unit; // 返回游戏对象
