@@ -1,3 +1,5 @@
+#ifndef RENDERER_H
+#define RENDERER_H
 // renderer.h
 #include <QPainter>
 #include<sprites.h>
@@ -18,4 +20,6 @@
     void drawBackground();
     void drawReticle();
     void drawParticles();
+
+#endif // RENDERER_H
 
