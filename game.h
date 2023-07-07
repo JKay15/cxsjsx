@@ -110,9 +110,9 @@ struct ShopItem {
   int cost;
   std::string name;
   std::string description;
-  void (*purchase)();
+  std::function<void()> purchase;
   ShopItem(){}
-  ShopItem(int cost1, const std::string& name1, const std::string& description1, void (*purchase1)()):cost(cost1),name(name1),description(description1),purchase(purchase1){}
+  ShopItem(int cost1, const std::string& name1, const std::string& description1, std::function<void()> purchase1):cost(cost1),name(name1),description(description1),purchase(purchase1){}
 };
 ShopItem createShopItem(int cost, const std::string& name, const std::string& description, void (*purchase)()) {
   ShopItem item;
