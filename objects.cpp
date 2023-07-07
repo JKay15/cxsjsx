@@ -3,7 +3,7 @@
 
 
 // 尸体对象函数实现
-GameObject Corpse() {
+GameObject objects::Corpse() {
     GameObject unit; // 创建游戏对象
     unit.sprite = sprites::skull; // 设置精灵图像
     unit.mass = 100; // 设置质量
@@ -12,7 +12,7 @@ GameObject Corpse() {
 }
 
 // 玩家对象函数实现
-GameObject Player() {
+GameObject objects::Player() {
     GameObject player; // 创建游戏对象
     player.x = 5; // 设置初始位置
     player.tags = PLAYER | UNDEAD; // 设置标签
@@ -25,7 +25,7 @@ GameObject Player() {
 }
 
 // 法术对象函数实现
-GameObject Spell() {
+GameObject objects::Spell() {
     GameObject object; // 创建游戏对象
     object.sprite = sprites::p_green_skull; // 设置精灵图像
     object.tags = SPELL; // 设置标签
@@ -40,8 +40,8 @@ GameObject Spell() {
 }
 
 // 流血法术对象函数实现
-GameObject BleedSpell() {
-    GameObject spell = Spell(); // 创建法术对象
+GameObject objects::BleedSpell() {
+    GameObject spell = objects::Spell(); // 创建法术对象
     spell.sprite = sprites::p_red_skull; // 设置精灵图像
     spell.emitter.extend({ // 扩展特效发射器属性
         {sprites::p_red_3, sprites::p_red_2, sprites::p_red_1},
@@ -55,8 +55,8 @@ GameObject BleedSpell() {
 }
 
 // 闪电法术对象函数实现
-GameObject LightningSpell() {
-    GameObject spell = Spell(); // 创建法术对象
+GameObject objects::LightningSpell() {
+    GameObject spell = objects::Spell(); // 创建法术对象
     spell.sprite = sprites::p_skull_yellow; // 设置精灵图像
     spell.emitter.frequency = 0.8; // 设置特效发射器发射频率
     spell.emitter.variants = { // 设置特效发射器精灵图像变体列表
@@ -69,7 +69,7 @@ GameObject LightningSpell() {
     return spell; // 返回游戏对象
 }
 // 骷髅士兵对象函数实现
-GameObject Skeleton() {
+GameObject objects::Skeleton() {
     GameObject unit; // 创建游戏对象
     unit.sprite = sprites::skeleton; // 设置精灵图像
     unit.tags = UNDEAD | MOBILE; // 设置标签
@@ -81,8 +81,8 @@ GameObject Skeleton() {
 }
 
 // 骷髅领主对象函数实现
-GameObject SkeletonLord() {
-    GameObject unit = Skeleton(); // 创建骷髅士兵对象
+GameObject objects::SkeletonLord() {
+    GameObject unit = objects::Skeleton(); // 创建骷髅士兵对象
     unit.sprite = sprites::big_skeleton; // 设置精灵图像
     unit.hp = unit.maxHp = 3; // 设置生命值和最大生命值
     unit.updateSpeed = 1500; // 设置更新速度
@@ -90,7 +90,7 @@ GameObject SkeletonLord() {
 }
 
 // 村民对象函数实现
-GameObject Villager() {
+GameObject objects::Villager() {
     GameObject unit; // 创建游戏对象
     std::vector<Sprite> tmp={sprites::villager_1, sprites::villager_2, sprites::villager_3, sprites::villager_4};
     unit.sprite = randomElement(tmp); // 随机设置精灵图像
@@ -107,15 +107,15 @@ GameObject Villager() {
 }
 
 // 强盗对象函数实现
-GameObject Bandit() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::Bandit() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.hp = unit.maxHp = 2; // 设置生命值和最大生命值
     return unit; // 返回游戏对象
 }
 
 // 国王对象函数实现
-GameObject TheKing() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::TheKing() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::the_king; // 设置精灵图像
     unit.updateSpeed = 5000; // 设置更新速度
     unit.hp = unit.maxHp = 100; // 设置生命值和最大生命值
@@ -153,7 +153,7 @@ GameObject TheKing() {
             customBehaviour->onFrame = [&](int dt) { // 设置自定义行为的帧处理函数
                 if ((t += dt) > 300) { // 每隔 300 毫秒执行一次操作
                     t = 0;
-                    game.spawn(Corpse(), randomInt(game.stage.width), game.stage.ceiling); // 在游戏中生成尸体对象
+                    game.spawn(objects::Corpse(), randomInt(game.stage.width), game.stage.ceiling); // 在游戏中生成尸体对象
                 }
             };
             unit.addBehaviour(customBehaviour);
@@ -176,8 +176,8 @@ GameObject TheKing() {
 
 
 // 冠军对象函数实现
-GameObject Champion() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::Champion() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::champion; // 设置精灵图像
     unit.updateSpeed = 1000; // 设置更新速度
     unit.hp = unit.maxHp = 10; // 设置生命值和最大生命值
@@ -186,8 +186,8 @@ GameObject Champion() {
 }
 
 // 壳骑士对象函数实现
-GameObject ShellKnight() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::ShellKnight() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::shell_knight_up; // 设置精灵图像
     unit.updateSpeed = 1000; // 设置更新速度
     unit.hp = unit.maxHp = 5; // 设置生命值和最大生命值
@@ -214,8 +214,8 @@ GameObject ShellKnight() {
 }
 
 // 和尚对象函数实现
-GameObject Monk() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::Monk() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::monk; // 设置精灵图像
     unit.updateSpeed = 600; // 设置更新速度
     unit.hp = unit.maxHp = 3; // 设置生命值和最大生命值
@@ -244,8 +244,8 @@ GameObject Monk() {
 }
 
 // 弓箭手对象函数实现
-GameObject Archer() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::Archer() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::archer; // 设置精灵图像
     unit.updateSpeed = 300; // 设置更新速度
     unit.hp = unit.maxHp = 2; // 设置生命值和最大生命值
@@ -253,8 +253,8 @@ GameObject Archer() {
 }
 
 // 吹笛人对象函数实现
-GameObject Piper() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::Piper() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::piper; // 设置精灵图像
     unit.updateSpeed = 500; // 设置更新速度
     unit.hp = unit.maxHp = 15; // 设置生命值和最大生命值
@@ -264,8 +264,8 @@ GameObject Piper() {
 }
 
 // 老鼠对象函数实现
-GameObject Rat() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::Rat() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::rat; // 设置精灵图像
     unit.updateSpeed = 200; // 设置更新速度
     unit.souls = 5; // 设置灵魂数量
@@ -274,8 +274,8 @@ GameObject Rat() {
 }
 
 // 愤怒骑士对象函数实现
-GameObject RageKnight() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::RageKnight() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::rage_knight; // 设置精灵图像
     unit.updateSpeed = 500; // 设置更新速度
     unit.hp = unit.maxHp = 5; // 设置生命值和最大生命值
@@ -314,8 +314,8 @@ GameObject RageKnight() {
 
 
 // 王室卫士对象函数实现
-GameObject RoyalGuard() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::RoyalGuard() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::royal_guard; // 设置精灵图像
     unit.hp = unit.maxHp = 4; // 设置生命值和最大生命值
     unit.souls = 10; // 设置灵魂数量
@@ -358,7 +358,7 @@ GameObject RoyalGuard() {
 }
 
 // 王室卫士宝珠对象函数实现
-GameObject RoyalGuardOrb() {
+GameObject objects::RoyalGuardOrb() {
     GameObject unit; // 创建游戏对象
     unit.sprite = sprites::yellow_orb; // 设置精灵图像
     unit.tags = SPELL; // 设置标签为法术
@@ -379,8 +379,8 @@ GameObject RoyalGuardOrb() {
 }
 
 // 巫师对象函数实现
-GameObject Wizard() {
-    GameObject unit = Villager(); // 创建村民对象
+GameObject objects::Wizard() {
+    GameObject unit = objects::Villager(); // 创建村民对象
     unit.sprite = sprites::wizard; // 设置精灵图像
     unit.hp = unit.maxHp = 15; // 设置生命值和最大生命值
     unit.souls = 10; // 设置灵魂数量
@@ -392,7 +392,7 @@ GameObject Wizard() {
 }
 
 // 传送门对象函数实现
-GameObject Portal() {
+GameObject objects::Portal() {
     GameObject unit; // 创建游戏对象
     unit.sprite = sprites::portal; // 设置精灵图像
     unit.tags = LIVING; // 设置标签为生物
