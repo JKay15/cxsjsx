@@ -218,8 +218,11 @@ Ritual Salvage{
     "Corpses become souls at the end of levels",
     [](){
         std::vector<GameObject> corpses;
-        std::copy_if(game.objects.begin(), game.objects.end(), std::back_inserter(corpses),
-            [](const GameObject& object) { return object.is(CORPSE); });
+        for(auto object:game.objects){
+            if(object->is(CORPSE)){
+                corpses.push_back(*object);
+            }
+        }
         for(GameObject corpse:corpses){
             ParticleEmitter emitter=fx::bones().extend(
                         corpse.center().x,
