@@ -64,14 +64,14 @@ struct Ritual {
   int requiredTags;
   bool recursive;
   Rarity rarity;
-  void (*onFrame)(float dt);
+  std::function<void(double dt)> onFrame;
   std::function<void()> onActive;
   std::function<void(GameObject*)> onCast;
   std::function<void()> onResurrect;
   std::function<void(GameObject*)> onResurrection;
-  void (*onDeath)(Death death);
+  std::function<void(Death* death)> onDeath;
   std::function<void()> onLevelEnd;
-  void (*onLevelStart)();
+  std::function<void()> onLevelStart;
   std::function<void()> onShopEnter;
   Ritual(int Tags,std::string Name,std::string Description,std::function<void(GameObject*)> tmp):name(Name),description(Description),tags(Tags){
       if(Name=="Giants"||Name=="Hardened"){
