@@ -111,9 +111,11 @@ void Resurrect() {
 
     // 获取游戏中所有尸体对象
     std::vector<GameObject> corpses;
-    std::copy_if(game.objects.begin(), game.objects.end(), std::back_inserter(corpses),
-        [](const GameObject& object) { return object.is(CORPSE); });
-
+    for(auto object:game.objects){
+        if(object->is(CORPSE)){
+            corpses.push_back(*object);
+        }
+    }
     // 遍历尸体对象列表
     for (auto& corpse : corpses) {
         // 将尸体从游戏中移除
